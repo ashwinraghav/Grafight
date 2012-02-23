@@ -1,0 +1,401 @@
+Grammar
+
+    0 $accept: input $end
+
+    1 input: /* empty */
+    2      | input line
+
+    3 line: HEADER INFO COLON line_info
+    4     | HEADER IDENTIFIER COMMA LINE INT_OPERAND SEMICOLON WARNING
+
+    5 line_info: function_name
+    6          | function_info
+
+    7 function_name: FUNC QUOTE IDENTIFIER QUOTE
+
+    8 function_info: info
+    9              | function_info COMMA info
+
+   10 info: USED INT_OPERAND REGS
+   11     | tuple LMEM
+   12     | tuple SMEM
+   13     | INT_OPERAND BYTES CMEM LEFT_SQUARE_BRACKET INT_OPERAND RIGHT_SQUARE_BRACKET
+   14     | INT_OPERAND BYTES LMEM
+   15     | INT_OPERAND BYTES SMEM
+   16     | INT_OPERAND BYTES CMEM
+   17     | INT_OPERAND REGS
+
+   18 tuple: INT_OPERAND PLUS INT_OPERAND BYTES
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INT_OPERAND (258) 4 10 13 14 15 16 17 18
+HEADER (259) 3 4
+INFO (260) 3
+FUNC (261) 7
+USED (262) 10
+REGS (263) 10 17
+BYTES (264) 13 14 15 16 18
+LMEM (265) 11 14
+SMEM (266) 12 15
+CMEM (267) 13 16
+IDENTIFIER (268) 4 7
+PLUS (269) 18
+COMMA (270) 4 9
+LEFT_SQUARE_BRACKET (271) 13
+RIGHT_SQUARE_BRACKET (272) 13
+COLON (273) 3
+SEMICOLON (274) 4
+QUOTE (275) 7
+LINE (276) 4
+WARNING (277) 4
+
+
+Nonterminals, with rules where they appear
+
+$accept (23)
+    on left: 0
+input (24)
+    on left: 1 2, on right: 0 2
+line (25)
+    on left: 3 4, on right: 2
+line_info (26)
+    on left: 5 6, on right: 3
+function_name (27)
+    on left: 7, on right: 5
+function_info (28)
+    on left: 8 9, on right: 6 9
+info (29)
+    on left: 10 11 12 13 14 15 16 17, on right: 8 9
+tuple (30)
+    on left: 18, on right: 11 12
+
+
+state 0
+
+    0 $accept: . input $end
+
+    $default  reduce using rule 1 (input)
+
+    input  go to state 1
+
+
+state 1
+
+    0 $accept: input . $end
+    2 input: input . line
+
+    $end    shift, and go to state 2
+    HEADER  shift, and go to state 3
+
+    line  go to state 4
+
+
+state 2
+
+    0 $accept: input $end .
+
+    $default  accept
+
+
+state 3
+
+    3 line: HEADER . INFO COLON line_info
+    4     | HEADER . IDENTIFIER COMMA LINE INT_OPERAND SEMICOLON WARNING
+
+    INFO        shift, and go to state 5
+    IDENTIFIER  shift, and go to state 6
+
+
+state 4
+
+    2 input: input line .
+
+    $default  reduce using rule 2 (input)
+
+
+state 5
+
+    3 line: HEADER INFO . COLON line_info
+
+    COLON  shift, and go to state 7
+
+
+state 6
+
+    4 line: HEADER IDENTIFIER . COMMA LINE INT_OPERAND SEMICOLON WARNING
+
+    COMMA  shift, and go to state 8
+
+
+state 7
+
+    3 line: HEADER INFO COLON . line_info
+
+    INT_OPERAND  shift, and go to state 9
+    FUNC         shift, and go to state 10
+    USED         shift, and go to state 11
+
+    line_info      go to state 12
+    function_name  go to state 13
+    function_info  go to state 14
+    info           go to state 15
+    tuple          go to state 16
+
+
+state 8
+
+    4 line: HEADER IDENTIFIER COMMA . LINE INT_OPERAND SEMICOLON WARNING
+
+    LINE  shift, and go to state 17
+
+
+state 9
+
+   13 info: INT_OPERAND . BYTES CMEM LEFT_SQUARE_BRACKET INT_OPERAND RIGHT_SQUARE_BRACKET
+   14     | INT_OPERAND . BYTES LMEM
+   15     | INT_OPERAND . BYTES SMEM
+   16     | INT_OPERAND . BYTES CMEM
+   17     | INT_OPERAND . REGS
+   18 tuple: INT_OPERAND . PLUS INT_OPERAND BYTES
+
+    REGS   shift, and go to state 18
+    BYTES  shift, and go to state 19
+    PLUS   shift, and go to state 20
+
+
+state 10
+
+    7 function_name: FUNC . QUOTE IDENTIFIER QUOTE
+
+    QUOTE  shift, and go to state 21
+
+
+state 11
+
+   10 info: USED . INT_OPERAND REGS
+
+    INT_OPERAND  shift, and go to state 22
+
+
+state 12
+
+    3 line: HEADER INFO COLON line_info .
+
+    $default  reduce using rule 3 (line)
+
+
+state 13
+
+    5 line_info: function_name .
+
+    $default  reduce using rule 5 (line_info)
+
+
+state 14
+
+    6 line_info: function_info .
+    9 function_info: function_info . COMMA info
+
+    COMMA  shift, and go to state 23
+
+    $default  reduce using rule 6 (line_info)
+
+
+state 15
+
+    8 function_info: info .
+
+    $default  reduce using rule 8 (function_info)
+
+
+state 16
+
+   11 info: tuple . LMEM
+   12     | tuple . SMEM
+
+    LMEM  shift, and go to state 24
+    SMEM  shift, and go to state 25
+
+
+state 17
+
+    4 line: HEADER IDENTIFIER COMMA LINE . INT_OPERAND SEMICOLON WARNING
+
+    INT_OPERAND  shift, and go to state 26
+
+
+state 18
+
+   17 info: INT_OPERAND REGS .
+
+    $default  reduce using rule 17 (info)
+
+
+state 19
+
+   13 info: INT_OPERAND BYTES . CMEM LEFT_SQUARE_BRACKET INT_OPERAND RIGHT_SQUARE_BRACKET
+   14     | INT_OPERAND BYTES . LMEM
+   15     | INT_OPERAND BYTES . SMEM
+   16     | INT_OPERAND BYTES . CMEM
+
+    LMEM  shift, and go to state 27
+    SMEM  shift, and go to state 28
+    CMEM  shift, and go to state 29
+
+
+state 20
+
+   18 tuple: INT_OPERAND PLUS . INT_OPERAND BYTES
+
+    INT_OPERAND  shift, and go to state 30
+
+
+state 21
+
+    7 function_name: FUNC QUOTE . IDENTIFIER QUOTE
+
+    IDENTIFIER  shift, and go to state 31
+
+
+state 22
+
+   10 info: USED INT_OPERAND . REGS
+
+    REGS  shift, and go to state 32
+
+
+state 23
+
+    9 function_info: function_info COMMA . info
+
+    INT_OPERAND  shift, and go to state 9
+    USED         shift, and go to state 11
+
+    info   go to state 33
+    tuple  go to state 16
+
+
+state 24
+
+   11 info: tuple LMEM .
+
+    $default  reduce using rule 11 (info)
+
+
+state 25
+
+   12 info: tuple SMEM .
+
+    $default  reduce using rule 12 (info)
+
+
+state 26
+
+    4 line: HEADER IDENTIFIER COMMA LINE INT_OPERAND . SEMICOLON WARNING
+
+    SEMICOLON  shift, and go to state 34
+
+
+state 27
+
+   14 info: INT_OPERAND BYTES LMEM .
+
+    $default  reduce using rule 14 (info)
+
+
+state 28
+
+   15 info: INT_OPERAND BYTES SMEM .
+
+    $default  reduce using rule 15 (info)
+
+
+state 29
+
+   13 info: INT_OPERAND BYTES CMEM . LEFT_SQUARE_BRACKET INT_OPERAND RIGHT_SQUARE_BRACKET
+   16     | INT_OPERAND BYTES CMEM .
+
+    LEFT_SQUARE_BRACKET  shift, and go to state 35
+
+    $default  reduce using rule 16 (info)
+
+
+state 30
+
+   18 tuple: INT_OPERAND PLUS INT_OPERAND . BYTES
+
+    BYTES  shift, and go to state 36
+
+
+state 31
+
+    7 function_name: FUNC QUOTE IDENTIFIER . QUOTE
+
+    QUOTE  shift, and go to state 37
+
+
+state 32
+
+   10 info: USED INT_OPERAND REGS .
+
+    $default  reduce using rule 10 (info)
+
+
+state 33
+
+    9 function_info: function_info COMMA info .
+
+    $default  reduce using rule 9 (function_info)
+
+
+state 34
+
+    4 line: HEADER IDENTIFIER COMMA LINE INT_OPERAND SEMICOLON . WARNING
+
+    WARNING  shift, and go to state 38
+
+
+state 35
+
+   13 info: INT_OPERAND BYTES CMEM LEFT_SQUARE_BRACKET . INT_OPERAND RIGHT_SQUARE_BRACKET
+
+    INT_OPERAND  shift, and go to state 39
+
+
+state 36
+
+   18 tuple: INT_OPERAND PLUS INT_OPERAND BYTES .
+
+    $default  reduce using rule 18 (tuple)
+
+
+state 37
+
+    7 function_name: FUNC QUOTE IDENTIFIER QUOTE .
+
+    $default  reduce using rule 7 (function_name)
+
+
+state 38
+
+    4 line: HEADER IDENTIFIER COMMA LINE INT_OPERAND SEMICOLON WARNING .
+
+    $default  reduce using rule 4 (line)
+
+
+state 39
+
+   13 info: INT_OPERAND BYTES CMEM LEFT_SQUARE_BRACKET INT_OPERAND . RIGHT_SQUARE_BRACKET
+
+    RIGHT_SQUARE_BRACKET  shift, and go to state 40
+
+
+state 40
+
+   13 info: INT_OPERAND BYTES CMEM LEFT_SQUARE_BRACKET INT_OPERAND RIGHT_SQUARE_BRACKET .
+
+    $default  reduce using rule 13 (info)
