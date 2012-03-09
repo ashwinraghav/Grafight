@@ -24,6 +24,7 @@ struct Node
 {
 	int starting;
 	int no_of_edges;
+        char type[100];
 };
 
 #include <kernel.cu>
@@ -92,11 +93,13 @@ void BFSGraph( int argc, char** argv)
 	bool *h_graph_mask = (bool*) malloc(sizeof(bool)*no_of_nodes);
 	bool *h_graph_visited = (bool*) malloc(sizeof(bool)*no_of_nodes);
 
-	int start, edgeno;   
+	int start, edgeno; 
+        char node_type[100];
 	// initalize the memory
 	for( unsigned int i = 0; i < no_of_nodes; i++) 
 	{
-		fscanf(fp,"%d %d",&start,&edgeno);
+		fscanf(fp,"%d %d %s", &start, &edgeno, node_type);
+                strcpy(h_graph_nodes[i].type, node_type);
 		h_graph_nodes[i].starting = start;
 		h_graph_nodes[i].no_of_edges = edgeno;
 		h_graph_mask[i]=false;
