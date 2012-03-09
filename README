@@ -1,0 +1,6 @@
+Grafight is essentially a Graph Traversal Engine that is capable of performing a series of traversals using the power of General Purpose GPU architectures. I hope for it to be a proof of concept that will demonstrate why/why not Graph Databses that are already out there can benefit out of taking this approach.
+The project is written partly in Ruby and Partly in C and requires a CUDA supporting GPU. The scripts that involve generating random graphs are written in Ruby (my choice of Language). The traversal engine is written in C simly for lack of other options.
+I have not attached any licensing agreements to the code. If you want to copy it, by all means DO!
+
+I tweet @ashwinraghav
+I blog too - blog.ashwinraghav.com
