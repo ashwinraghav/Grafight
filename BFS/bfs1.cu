@@ -179,14 +179,8 @@ void BFSGraph( int argc, char** argv)
 		//if no thread changes this value then the loop stops
 		stop=false;
 		cudaMemcpy( d_over, &stop, sizeof(bool), cudaMemcpyHostToDevice);
-		//cutStartTimer( timer);
 		Kernel<<< grid, threads, 0 >>>( d_graph_nodes, d_graph_edges, d_graph_mask, d_graph_visited, d_cost, d_over, no_of_nodes);
 		cudaThreadSynchronize();
-		//cutStopTimer( timer);
-		//timer_acc += cutGetTimerValue(timer); 
-		//cutResetTimer( timer);
-		// check if kernel execution generated and error
-		//CUT_CHECK_ERROR("Kernel execution failed");
 		cudaMemcpy( &stop, d_over, sizeof(bool), cudaMemcpyDeviceToHost);
 		k++;
 	}
@@ -197,15 +191,6 @@ void BFSGraph( int argc, char** argv)
 
 	// copy result from device to host
 	cudaMemcpy( h_cost, d_cost, sizeof(int)*no_of_nodes, cudaMemcpyDeviceToHost);
-
-	//Stop the Timer
-	//CUT_SAFE_CALL( cutStopTimer( timer));
-	//printf( "Processing time: %f (ms)\n", cutGetTimerValue(timer));
-
-	//printf( "Processing time: %f (ms)\n", timer_acc);
-	//CUT_SAFE_CALL( cutDeleteTimer( timer));
-
-        //store_results("results.txt");
 
 	// cleanup memory
 	free( h_graph_nodes);
