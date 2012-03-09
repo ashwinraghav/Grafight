@@ -1,0 +1,13 @@
+*tar.gz
+*.txt
+*.a
+*.o
+\#*
+*log.gz
+*~
+_*
+libcudart.so
+benchmarks/CUDA/*/gpgpusim.config
+benchmarks/CUDA/*/mesh
+benchmarks/CUDA/*/icnt_config_quadro_islip.txt
+*orig
